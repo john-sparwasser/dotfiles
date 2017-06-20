@@ -1,11 +1,12 @@
-# Path variable
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:$PATH
-
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/john/.oh-my-zsh
 
 # export MANPATH="/usr/local/man:$MANPATH"
 source $ZSH/oh-my-zsh.sh
+
+# Path variable construction
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:$PATH
+export PATH=/Users/john/.composer/vendor/bin:$PATH
 
 # Set name of the theme to load.
 ZSH_THEME="agnoster"
@@ -26,4 +27,3 @@ alias desktop="cd ~/Desktop"
 alias projects="cd ~/projects"
 
 alias ssh_config="cat ~/.ssh/config"
-alias artisan="php artisan"

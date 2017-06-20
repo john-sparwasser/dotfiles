@@ -1,5 +1,3 @@
-"~~~~~~~Vundle Plugins~~~~~~`
-
 "Vundle
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -12,11 +10,11 @@ Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'EdwardIII/vim-codebug'
 Plugin 'posva/vim-vue'
 Plugin 'dbakker/vim-projectroot'
 Plugin 'joonty/vim-phpunitqf.git'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'sekel/vim-vue-syntastic'
 
 call vundle#end()
 filetype plugin indent on
@@ -74,7 +72,7 @@ hi VertSplit guibg=bg guifg=bg
 if has("gui_macvim")
     set macligatures
 endif
-set guifont=Fira\ Code:h10
+set guifont=Fira\ Mono\ for\ Powerline:h10
 set encoding=utf-8
 set t_Co=256
 set termencoding=utf-8
@@ -149,7 +147,6 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,vendor/*,*/\.git/*,node_modules/*,*/res
 " The Silver Searcher
 if executable('ag')
     " Use ag over grep
-    "set grepprg=ag\ -S\ --nocolor\ --nogroup\ --column\ --ignore\ \"*\.css*\"\ --ignore\ \"\.\/vendor\/*\"\ --ignore\ \"\.\/node_modules\/*\"\ --ignore\ \"\.\/resources\/assets\/*\"\ --ignore\ \"\.\/public\/assets\/bower_components\/*\"\ --vimgrep\ -Q\ $*
     set grepprg=ag\ --vimgrep\ -Q\ -p\ ~\/\.agignore\ $*
     set grepformat=%f:%l:%c:%m
 
@@ -164,6 +161,7 @@ endif
 let g:syntastic_auto_loc_list=1
 
 let g:syntastic_php_checkers = ['php']
+let g:syntastic_javascript_checkers = ['eslint']
 
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window = 'top,order:ttb,min:1,max:30,results:30'
@@ -189,3 +187,18 @@ augroup vimrc_tabs
     autocmd Filetype php setlocal tabstop=4|setl shiftwidth=4|setl softtabstop=4
     autocmd Filetype less setlocal tabstop=4|setl shiftwidth=4|setl softtabstop=4
 augroup END
+
+augroup filetypedetect
+    au BufRead,BufNewFile *.njk setfiletype html
+augroup END
+
+"~~~~~~ Vue ESLint ~~~~~~~
+let g:syntastic_vue_checkers = ['eslint']
+let local_eslint = finddir('node_modules', '.;') . '/.bin/eslint'
+if matchstr(local_eslint, "^\/\\w") == ''
+    let local_eslint = getcwd() . "/" . local_eslint
+endif
+if executable(local_eslint)
+    let g:syntastic_javascript_eslint_exec = local_eslint
+    let g:syntastic_vue_eslint_exec = local_eslint
+endif
